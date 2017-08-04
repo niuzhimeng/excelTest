@@ -1,13 +1,9 @@
 package com.nzm.model.po;
 
-import java.util.Date;
-
 public class BatchExcel {
     private String id;
 
     private String fileName;
-
-    private Long fileSize;
 
     private String extName;
 
@@ -31,14 +27,6 @@ public class BatchExcel {
 
     public void setFileName(String fileName) {
         this.fileName = fileName == null ? null : fileName.trim();
-    }
-
-    public Long getFileSize() {
-        return fileSize;
-    }
-
-    public void setFileSize(Long fileSize) {
-        this.fileSize = fileSize;
     }
 
     public String getExtName() {

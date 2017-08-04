@@ -48,7 +48,7 @@ public class ExcelController {
     public ResponseEntity<byte[]> fileDownload(@RequestParam String fileId) throws Exception {
         //根据fileId查询文件信息
         BatchExcel fileInfo = batchExcelMapper.selectFileById(fileId);
-        String fileName = fileInfo.getFileName() + "_测试结果" + "." + fileInfo.getExtName();
+        String fileName = fileInfo.getFileName() + "." + fileInfo.getExtName();
         String path = fileInfo.getPath();
         return fileOperationUtil.downloadFile(path, fileName);
     }

@@ -68,8 +68,6 @@ public class FileOperationUtilImpl implements FileOperationUtil {
 
         String filename = excel.getOriginalFilename();
         filename = filename.replaceAll("\\s*", "");
-        //文件大小
-        Long fileSize = excel.getSize();
         //获取文件名（不带后缀名）
         String originName = UploadUtils.getFileName(filename);
         //获取扩展名
@@ -97,9 +95,8 @@ public class FileOperationUtilImpl implements FileOperationUtil {
         batchExcel.setId(id);
         batchExcel.setBelongAccount(account);
         batchExcel.setCreatedTime(General.getCurrentTime());
-        batchExcel.setFileSize(fileSize);
         batchExcel.setExtName(fileExtName);
-        batchExcel.setFileName(originName);
+        batchExcel.setFileName(originName + "_测试结果");
         batchExcel.setPath(filePath);
 
         batchExcelMapper.insert(batchExcel);

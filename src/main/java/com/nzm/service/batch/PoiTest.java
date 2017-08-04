@@ -69,6 +69,7 @@ public abstract class PoiTest {
             }
             //发送http请求
 //            String resultString = OkHttpUtils.get(url);
+            Thread.sleep(30);
             String resultString = "{\"HasData\":true,\"Records\":[{\"Time\":\"2017-07-11 10:12:00\",\"Location\":\"迎宾路1001公里\",\"Reason\":\"机动车违反禁令标志指示的\",\"count\":\"100\",\"status\":\"0\",\"department\":null,\"Degree\":\"3\",\"Code\":\"1344\",\"Archive\":\"5110k80000157463\",\"Telephone\":null,\"Excutelocation\":null,\"Excutedepartment\":null,\"Category\":\"\",\"Latefine\":\"0\",\"Punishmentaccording\":null,\"Illegalentry\":null,\"Locationid\":5110,\"LocationName\":\"四川内江\",\"DataSourceID\":9981,\"RecordType\":\"实时数据\",\"Poundage\":\"0\",\"CanProcess\":\"0\",\"UniqueCode\":\"9c8281f2b502861e4dfa0701c58637bc\",\"SecondaryUniqueCode\":\"709346\",\"DegreePoundage\":\"0\",\"Other\":\"0\",\"CanprocessMsg\":null,\"CooperPoundge\":null,\"ActivePoundge\":\"-1\"}],\"ErrorCode\":0,\"Success\":true,\"ErrMessage\":\"\",\"ResultType\":\"实时数据\",\"LastSearchTime\":\"2017-07-21 10:17:10\",\"Other\":\"\"}";
             StringBuilder parameterString = new StringBuilder();
             for (String parameter : rowList) {
@@ -76,7 +77,6 @@ public abstract class PoiTest {
             }
 
             resultList.add(parameterString.toString() + "#1#" + resultString);
-            Thread.sleep(30);
             System.out.println(url);
             rowList.clear();
         }
