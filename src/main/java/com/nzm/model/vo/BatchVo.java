@@ -19,7 +19,7 @@ public class BatchVo {
      */
     private String batchType;
     /**
-     * 测试数据excel2007
+     * 测试数据excel 2007
      */
     private MultipartFile excel;
 

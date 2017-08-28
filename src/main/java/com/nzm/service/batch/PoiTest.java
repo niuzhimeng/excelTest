@@ -3,7 +3,6 @@ package com.nzm.service.batch;
 import com.nzm.model.po.BatchExcel;
 import com.nzm.model.vo.JsonResponse;
 import com.nzm.service.file.FileOperationUtil;
-import com.nzm.utils.UploadUtils;
 import org.apache.poi.ss.util.NumberToTextConverter;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -12,10 +11,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import javax.security.auth.login.AccountException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -93,7 +88,6 @@ public abstract class PoiTest {
      */
     private BatchExcel write(List<String> resultList, String account, MultipartFile excel) throws Exception {
 
-
         // 创建新的Excel 工作簿
         XSSFWorkbook workbook = new XSSFWorkbook();
         // 在Excel工作簿中建一工作表，其名为缺省值
@@ -136,7 +130,7 @@ public abstract class PoiTest {
      * @param token   token
      */
     protected String appendAccountInfo(String url, String account, String token) {
-        return url += "?account=" + account + "&accessToken=" + token;
+        return url + ("?account=" + account + "&accessToken=" + token);
     }
 }
 
