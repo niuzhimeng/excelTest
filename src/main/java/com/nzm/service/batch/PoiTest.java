@@ -1,8 +1,7 @@
 package com.nzm.service.batch;
 
 import com.nzm.model.po.BatchExcel;
-import com.nzm.model.vo.JsonResponse;
-import com.nzm.service.file.FileOperationUtil;
+import com.nzm.service.file.impl.FileOperationUtilImpl;
 import org.apache.poi.ss.util.NumberToTextConverter;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -10,7 +9,6 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,16 +19,13 @@ import java.util.List;
  */
 public abstract class PoiTest {
 
-    @Resource
-    private FileOperationUtil fileOperationUtil;
-
     /**
      * 读取excel
      *
      * @param inputStream 文件对象
      * @throws Exception
      */
-    public JsonResponse<BatchExcel> readAndWrite(InputStream inputStream, String account, MultipartFile file) throws Exception {
+    public List<String> readExcel(InputStream inputStream) throws Exception {
         //返回结果集合
         List<String> resultList = new ArrayList<>();
         //一行元素的集合
@@ -59,9 +54,7 @@ public abstract class PoiTest {
                 rowList.add(currentCell);
             }
             String url = appendUrl(rowList);
-            if (null == url) {
-                return new JsonResponse<BatchExcel>().createError("参数个数错误");
-            }
+
             //发送http请求
 //            String resultString = OkHttpUtils.get(url);
             Thread.sleep(30);
@@ -75,9 +68,7 @@ public abstract class PoiTest {
             System.out.println(url);
             rowList.clear();
         }
-        //调用输出方法
-        BatchExcel write = write(resultList, account, file);
-        return new JsonResponse<BatchExcel>().createSuccess("测试成功!请下载测试结果。", write);
+        return resultList;
     }
 
     /**
@@ -86,7 +77,7 @@ public abstract class PoiTest {
      * @param resultList 返回结果的list<入参,返回json>
      * @throws Exception
      */
-    private BatchExcel write(List<String> resultList, String account, MultipartFile excel) throws Exception {
+    public BatchExcel write(List<String> resultList, String account, MultipartFile excel) throws Exception {
 
         // 创建新的Excel 工作簿
         XSSFWorkbook workbook = new XSSFWorkbook();
@@ -109,8 +100,7 @@ public abstract class PoiTest {
             cell.setCellValue(ss[1]);
         }
 
-        //保存输出结果
-        return fileOperationUtil.saveOutExcel(workbook, account, excel);
+        return FileOperationUtilImpl.saveOutExcel(workbook, account, excel);
 
     }
 
@@ -129,8 +119,10 @@ public abstract class PoiTest {
      * @param account 账号
      * @param token   token
      */
-    protected String appendAccountInfo(String url, String account, String token) {
+    public String fatherAppendAccount(String url, String account, String token) {
         return url + ("?account=" + account + "&accessToken=" + token);
     }
+
+    public abstract void appendAccountInfo(String account, String token);
 }
 

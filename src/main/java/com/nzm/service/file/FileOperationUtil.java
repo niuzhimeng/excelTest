@@ -4,6 +4,7 @@ import com.nzm.model.po.BatchExcel;
 import com.nzm.model.vo.BatchVo;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;

@@ -10,13 +10,12 @@ import java.util.List;
  * 车辆违章
  * Created by Nzm on 2017/8/2.
  */
-@Service
 public class Traffic extends PoiTest {
 
     /**
      * 访问url
      */
-    private String url = "http://localhost:8080/rest/traffic/offences";
+    private String url = "http://localhost:8080/tianXingDataApi/rest/traffic/offences";
 
     @Override
     public String appendUrl(List<String> cell) {
@@ -27,6 +26,6 @@ public class Traffic extends PoiTest {
     }
 
     public void appendAccountInfo(String account, String token) {
-        url = super.appendAccountInfo(url, account, token);
+        url = super.fatherAppendAccount(url, account, token);
     }
 }

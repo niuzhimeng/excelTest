@@ -6,6 +6,7 @@ import com.nzm.model.vo.BatchVo;
 import com.nzm.model.vo.JsonResponse;
 import com.nzm.service.BatchService;
 import com.nzm.service.file.FileOperationUtil;
+import com.nzm.service.file.impl.FileOperationUtilImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,11 +27,6 @@ public class ExcelController {
 
     @Resource
     private BatchExcelMapper batchExcelMapper;
-    /**
-     * 文件操作工具类
-     */
-    @Resource
-    private FileOperationUtil fileOperationUtil;
 
     @RequestMapping(value = "batchTest", method = RequestMethod.POST)
     public JsonResponse<BatchExcel> batchTest(BatchVo batchVo) throws Exception {
@@ -50,6 +46,6 @@ public class ExcelController {
         BatchExcel fileInfo = batchExcelMapper.selectFileById(fileId);
         String fileName = fileInfo.getFileName() + "." + fileInfo.getExtName();
         String path = fileInfo.getPath();
-        return fileOperationUtil.downloadFile(path, fileName);
+        return FileOperationUtilImpl.downloadFile(path, fileName);
     }
 }

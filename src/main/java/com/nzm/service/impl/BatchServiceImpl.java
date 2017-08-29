@@ -2,19 +2,21 @@ package com.nzm.service.impl;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.nzm.dao.mapper.BatchExcelMapper;
 import com.nzm.model.po.BatchExcel;
 import com.nzm.model.vo.BatchVo;
 import com.nzm.model.vo.JsonResponse;
 import com.nzm.service.BatchService;
-import com.nzm.service.batch.impl.PoliceIdentity;
-import com.nzm.service.batch.impl.Traffic;
-import com.nzm.service.file.FileOperationUtil;
+import com.nzm.service.batch.PoiTest;
+import com.nzm.service.file.impl.FileOperationUtilImpl;
+import com.nzm.utils.ApiClassFactory;
 import com.nzm.utils.OkHttpUtils;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.InputStream;
+import java.util.List;
 
 /**
  * Created by Nzm on 2017/8/3.
@@ -25,17 +27,10 @@ public class BatchServiceImpl implements BatchService {
      * 获取授权码的URL（post）
      */
     private static final String getAccessTokenUrl = "http://tianxingshuke.com/api/rest/common/organization/auth";
-    @Resource
-    private PoliceIdentity policeIdentity;
 
     @Resource
-    private Traffic traffic;
-
-    /**
-     * 文件保存工具类
-     */
-    @Resource
-    private FileOperationUtil fileOperationUtil;
+    @Qualifier("BatchExcelMapper")
+    private BatchExcelMapper batchExcelMapper;
 
     @Override
     public JsonResponse<BatchExcel> execute(BatchVo batchVo) throws Exception {
@@ -44,22 +39,20 @@ public class BatchServiceImpl implements BatchService {
         String token = getToken(account, batchVo.getSignature());
         String batchType = batchVo.getBatchType();
 
-        InputStream inputStream = excel.getInputStream();
+        //获取指定对象
+        Class<?> concrete = ApiClassFactory.getConcrete(batchType);
+        PoiTest poiTest = (PoiTest) concrete.newInstance();
+        //拼接账号信息
+        poiTest.appendAccountInfo(account, token);
+        //读取excel
+        List<String> readExcelList = poiTest.readExcel(excel.getInputStream());
+        //输出结果
+        BatchExcel write = poiTest.write(readExcelList, account, excel);
+        //保存文件信息
+        batchExcelMapper.insert(write);
         //保存输入excel
-        fileOperationUtil.saveInExcel(batchVo);
-
-        if (inputStream == null) {
-            return new JsonResponse<BatchExcel>().createError("未选择文件");
-        }
-
-        if ("traffic".equals(batchType)) {
-            traffic.appendAccountInfo(account, token);
-            return traffic.readAndWrite(inputStream, account, excel);
-        } else if ("policeIdentity".equals(batchType)) {
-            policeIdentity.appendAccountInfo(account, token);
-            return policeIdentity.readAndWrite(inputStream, account, excel);
-        }
-        return new JsonResponse<BatchExcel>().createError("暂不支持该接口的批量测试");
+        FileOperationUtilImpl.saveInExcel(batchVo);
+        return new JsonResponse<BatchExcel>().createSuccess("测试完成，请下载测试结果", write);
     }
 
     /**

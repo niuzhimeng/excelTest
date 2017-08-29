@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository("BatchExcelMapper")
 public interface BatchExcelMapper {
+
     int insert(BatchExcel record);
 
     int insertSelective(BatchExcel record);

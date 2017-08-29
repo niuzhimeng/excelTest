@@ -1,22 +1,17 @@
 package com.nzm.service.file.impl;
 
-import com.nzm.dao.mapper.BatchExcelMapper;
 import com.nzm.model.po.BatchExcel;
 import com.nzm.model.vo.BatchVo;
-import com.nzm.service.file.FileOperationUtil;
 import com.nzm.utils.General;
 import com.nzm.utils.UploadUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -25,8 +20,7 @@ import java.net.URLEncoder;
 /**
  * Created by Nzm on 2017/8/3.
  */
-@Component
-public class FileOperationUtilImpl implements FileOperationUtil {
+public class FileOperationUtilImpl {
 
     private static final String ENCODING = "utf-8";
     /**
@@ -36,12 +30,8 @@ public class FileOperationUtilImpl implements FileOperationUtil {
 
     private static final String KEY_NAME = "outExcelSavePath";
 
-    @Resource
-    @Qualifier("BatchExcelMapper")
-    private BatchExcelMapper batchExcelMapper;
 
-    @Override
-    public void saveInExcel(BatchVo batchVo) {
+    public static void saveInExcel(BatchVo batchVo) throws Exception {
         //读取输入文件的保存位置
         String inExcelSavePath = UploadUtils.getPropertyValue(null, "inExcelSavePath");
 
@@ -61,8 +51,7 @@ public class FileOperationUtilImpl implements FileOperationUtil {
         }
     }
 
-    @Override
-    public BatchExcel saveOutExcel(XSSFWorkbook workbook, String account, MultipartFile excel) throws Exception {
+    public static BatchExcel saveOutExcel(XSSFWorkbook workbook, String account, MultipartFile excel) throws Exception {
         //输出excel的保存位置
         String outExcelSavePath = UploadUtils.getPropertyValue(null, "outExcelSavePath");
 
@@ -99,11 +88,10 @@ public class FileOperationUtilImpl implements FileOperationUtil {
         batchExcel.setFileName(originName + "_测试结果");
         batchExcel.setPath(filePath);
 
-        batchExcelMapper.insert(batchExcel);
         return batchExcel;
     }
 
-    public ResponseEntity<byte[]> downloadFile(String filePath, String fileName) throws IOException {
+    public static ResponseEntity<byte[]> downloadFile(String filePath, String fileName) throws IOException {
         //从配置文件中读取保存路径
         String fileSavePath = UploadUtils.getPropertyValue(PROPERTIES_NAME, KEY_NAME);
         String path = fileSavePath.substring(0, fileSavePath.lastIndexOf("/"));
@@ -119,7 +107,7 @@ public class FileOperationUtilImpl implements FileOperationUtil {
      * @return
      * @throws IOException
      */
-    private ResponseEntity<byte[]> downloadAssist(String filePath, String fileName) throws IOException {
+    private static ResponseEntity<byte[]> downloadAssist(String filePath, String fileName) throws IOException {
         File file = new File(filePath);
         if (!file.isFile() || !file.exists()) {
             throw new IllegalArgumentException("filePath 参数必须是真实存在的文件路径:" + filePath);
