@@ -5,6 +5,7 @@ import com.google.gson.JsonParser;
 import com.nzm.model.po.BatchExcel;
 import com.nzm.service.batch.PoiTest;
 import com.nzm.service.file.impl.FileOperationUtilImpl;
+import com.nzm.utils.ExcelUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.*;
@@ -35,42 +36,15 @@ public class BlackList extends PoiTest {
 
     @Override
     public BatchExcel write(List<String> resultList, String account, MultipartFile excel) throws Exception {
-        // 创建新的Excel 工作簿
-        XSSFWorkbook workbook = new XSSFWorkbook();
-        //1.1创建合并单元格对象
-        CellRangeAddress callRangeAddress = new CellRangeAddress(0, 0, 0, 3);//起始行,结束行,起始列,结束列
-        //1.2头标题样式
-        XSSFCellStyle xssfCellStyle = createCellStyle(workbook, (short) 13);
-        //1.3列标题样式
-        XSSFCellStyle colStyle = createCellStyle(workbook, (short) 13);
-        //2.创建工作表
-        XSSFSheet sheet = workbook.createSheet("黑名单测试结果");
-        //2.1加载合并单元格对象
-        sheet.addMergedRegion(callRangeAddress);
-        //设置默认列宽
-        sheet.setDefaultColumnWidth(25);
-        //3.创建行
-        //3.1创建头标题行;并且设置头标题
-        XSSFRow row = sheet.createRow(0);
-        XSSFCell cell = row.createCell(0);
-
-        //加载单元格样式
-        cell.setCellStyle(xssfCellStyle);
-        cell.setCellValue("黑名单测试结果");
-
-        //3.2创建列标题;并且设置列标题
-        XSSFRow row2 = sheet.createRow(1);
+        //第二行列名字
         String[] titles = {"姓名", "身份证号码", "查询结果", "查询结果描述"};
-        for (int i = 0; i < 4; i++) {
-            XSSFCell cell2 = row2.createCell(i);
-            //加载单元格样式
-            cell2.setCellStyle(colStyle);
-            cell2.setCellValue(titles[i]);
-        }
-
+        XSSFWorkbook xssfWorkbook = ExcelUtils.createExcel("黑名单测试结果", titles);
+        //获得创建好表头的sheet
+        XSSFSheet sheet = xssfWorkbook.getSheetAt(0);
         //输出内容
         int row_num = resultList.size();
         for (int i = 0; i < row_num; i++) {
+            //从第三行开始输入(一二行是表头)
             XSSFRow outRow = sheet.createRow(i + 2);
             String[] ss = resultList.get(i).split("#1#");
             JsonObject asJsonObject = new JsonParser().parse(ss[1]).getAsJsonObject();
@@ -92,23 +66,8 @@ public class BlackList extends PoiTest {
                 XSSFCell cellFour = outRow.createCell(3);
                 cellFour.setCellType(XSSFCell.CELL_TYPE_STRING);
                 cellFour.setCellValue(dataObject.get("statusDesc").getAsString());
-
             }
         }
-        return FileOperationUtilImpl.saveOutExcel(workbook, account, excel);
-    }
-
-    private static XSSFCellStyle createCellStyle(XSSFWorkbook workbook, short fontSize) {
-        // TODO Auto-generated method stub
-        XSSFCellStyle style = workbook.createCellStyle();
-        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);//水平居中
-        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);//垂直居中
-        //创建字体
-        XSSFFont font = workbook.createFont();
-        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-        font.setFontHeightInPoints(fontSize);
-        //加载字体
-        style.setFont(font);
-        return style;
+        return FileOperationUtilImpl.saveOutExcel(xssfWorkbook, account, excel);
     }
 }
