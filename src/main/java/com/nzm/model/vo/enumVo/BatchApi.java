@@ -6,7 +6,8 @@ package com.nzm.model.vo.enumVo;
 public enum BatchApi {
 
     IDENTITY("身份一致性验证"),
-    VEHICLE_ILLEGAL("车辆违章");
+    VEHICLE_ILLEGAL("车辆违章"),
+    BLACK_LIST("黑名单");
 
     private String apiName;
 

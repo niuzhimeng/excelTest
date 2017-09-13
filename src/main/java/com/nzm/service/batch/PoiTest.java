@@ -70,7 +70,7 @@ public abstract class PoiTest {
             //发送http请求
 //            String resultString = OkHttpUtils.get(url);
             Thread.sleep(30);
-            String resultString = "{\"HasData\":true,\"Records\":[{\"Time\":\"2017-07-11 10:12:00\",\"Location\":\"迎宾路1001公里\",\"Reason\":\"机动车违反禁令标志指示的\",\"count\":\"100\",\"status\":\"0\",\"department\":null,\"Degree\":\"3\",\"Code\":\"1344\",\"Archive\":\"5110k80000157463\",\"Telephone\":null,\"Excutelocation\":null,\"Excutedepartment\":null,\"Category\":\"\",\"Latefine\":\"0\",\"Punishmentaccording\":null,\"Illegalentry\":null,\"Locationid\":5110,\"LocationName\":\"四川内江\",\"DataSourceID\":9981,\"RecordType\":\"实时数据\",\"Poundage\":\"0\",\"CanProcess\":\"0\",\"UniqueCode\":\"9c8281f2b502861e4dfa0701c58637bc\",\"SecondaryUniqueCode\":\"709346\",\"DegreePoundage\":\"0\",\"Other\":\"0\",\"CanprocessMsg\":null,\"CooperPoundge\":null,\"ActivePoundge\":\"-1\"}],\"ErrorCode\":0,\"Success\":true,\"ErrMessage\":\"\",\"ResultType\":\"实时数据\",\"LastSearchTime\":\"2017-07-21 10:17:10\",\"Other\":\"\"}";
+            String resultString = "{\"success\":true,\"data\":{\"name\":\"王卫卫\",\"idCard\":\"130433198206060127\",\"status\":\"NO_DATA\",\"statusDesc\":\"查询无数据\"}}";
             //如果token过期，重新获取并拼接url
             if (FeedBack.TOKEN_EXPIRED.getStatus().equals(resultString)) {
                 token = getToken(batchVo.getAccount(), batchVo.getSignature());
@@ -103,18 +103,21 @@ public abstract class PoiTest {
         XSSFWorkbook workbook = new XSSFWorkbook();
         // 在Excel工作簿中建一工作表，其名为缺省值
         XSSFSheet sheet = workbook.createSheet();
-
+        //获取列       | 获取集合第一个元素|   获得输入项           |   获取输入项个数
         int col_num = resultList.get(0).split("#1#")[0].split("; ").length;
         int row_num = resultList.size();
         for (int i = 0; i < row_num; i++) {
             XSSFRow row = sheet.createRow(i);
             String[] ss = resultList.get(i).split("#1#");
+            //获取输入项的数组
             String[] params = ss[0].split("; ");
+            //打印输入项
             for (int j = 0; j < col_num; j++) {
                 XSSFCell cell = row.createCell(j);
                 cell.setCellType(XSSFCell.CELL_TYPE_STRING);
                 cell.setCellValue(params[j]);
             }
+            //打印输出项
             XSSFCell cell = row.createCell(col_num + 1);
             cell.setCellType(XSSFCell.CELL_TYPE_STRING);
             cell.setCellValue(ss[1]);

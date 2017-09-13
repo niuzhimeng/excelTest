@@ -1,5 +1,4 @@
-package com.nzm.service.batch.impl;
-
+package com.nzm.service.batch.impl.check;
 
 import com.nzm.service.batch.PoiTest;
 
@@ -18,9 +17,6 @@ public class Traffic extends PoiTest {
 
     @Override
     public String appendUrl(List<String> cell) {
-        if(cell.size() != 3){
-            return null;
-        }
         return url + "&carNumber=" + cell.get(0) + "&carCode=" + cell.get(1) + "&carDriveNumber=" + cell.get(2);
     }
 
