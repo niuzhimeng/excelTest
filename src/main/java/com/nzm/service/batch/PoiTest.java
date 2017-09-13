@@ -127,7 +127,7 @@ public abstract class PoiTest {
     /**
      * 获取授权码
      */
-    public String getToken(String account, String signature) {
+    private String getToken(String account, String signature) {
         String token = null;
         String url = getAccessTokenUrl + "?account=" + account + "&signature=" + signature;
         String tokenJson = OkHttpUtils.post(url);

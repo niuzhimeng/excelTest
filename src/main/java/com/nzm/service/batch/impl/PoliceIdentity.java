@@ -21,9 +21,6 @@ public class PoliceIdentity extends PoiTest {
 
     @Override
     public String appendUrl(List<String> cell) {
-        if (cell.size() != 2) {
-            return null;
-        }
         return url + "&name=" + cell.get(0) + "&idCard=" + cell.get(1);
     }
 }
