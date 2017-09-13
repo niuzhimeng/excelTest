@@ -51,7 +51,7 @@ public class FileOperationUtilImpl {
         }
     }
 
-    public static BatchExcel saveOutExcel(XSSFWorkbook workbook, String account, MultipartFile excel) throws Exception {
+    public static BatchExcel saveOutExcel(XSSFWorkbook workbook, String account, MultipartFile excel, String fileName) throws Exception {
         //输出excel的保存位置
         String outExcelSavePath = UploadUtils.getPropertyValue(null, "outExcelSavePath");
 
@@ -80,15 +80,13 @@ public class FileOperationUtilImpl {
         // 操作结束，关闭文件
         fOut.close();
 
-        BatchExcel batchExcel = new BatchExcel();
-        batchExcel.setId(id);
-        batchExcel.setBelongAccount(account);
-        batchExcel.setCreatedTime(General.getCurrentTime());
-        batchExcel.setExtName(fileExtName);
-        batchExcel.setFileName(originName + "_测试结果");
-        batchExcel.setPath(filePath);
-
-        return batchExcel;
+        return new BatchExcel()
+                .setId(id)
+                .setBelongAccount(account)
+                .setCreatedTime(General.getCurrentTime())
+                .setExtName(fileExtName)
+                .setFileName(originName + fileName)
+                .setPath(filePath);
     }
 
     public static ResponseEntity<byte[]> downloadFile(String filePath, String fileName) throws IOException {

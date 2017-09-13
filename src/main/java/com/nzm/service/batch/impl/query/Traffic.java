@@ -1,6 +1,8 @@
 package com.nzm.service.batch.impl.query;
 
+import com.nzm.model.po.BatchExcel;
 import com.nzm.service.batch.PoiTest;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -14,6 +16,11 @@ public class Traffic extends PoiTest {
      * 访问url
      */
     private String url = "http://localhost:8080/tianXingDataApi/rest/traffic/offences";
+
+    @Override
+    public List<BatchExcel> write(List<String> resultList, String account, MultipartFile excel) throws Exception {
+        return null;
+    }
 
     @Override
     public String appendUrl(List<String> cell) {

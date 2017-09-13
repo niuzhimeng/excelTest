@@ -42,7 +42,7 @@ public class ExcelUtils {
 
         //3.2创建列标题;并且设置列标题
         XSSFRow row2 = sheet.createRow(1);
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < titles.length; i++) {
             XSSFCell cell2 = row2.createCell(i);
             //加载单元格样式
             cell2.setCellStyle(colStyle);

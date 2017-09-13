@@ -70,7 +70,7 @@ public abstract class PoiTest {
             //发送http请求
 //            String resultString = OkHttpUtils.get(url);
             Thread.sleep(30);
-            String resultString = "{\"success\":true,\"data\":{\"name\":\"王卫卫\",\"idCard\":\"130433198206060127\",\"status\":\"NO_DATA\",\"statusDesc\":\"查询无数据\"}}";
+            String resultString = "{\"success\":false,\"data\":{\"name\":\"王卫卫\",\"idCard\":\"130433198206060127\",\"status\":\"NO_DATA\",\"statusDesc\":\"查询无数据\"}}";
             //如果token过期，重新获取并拼接url
             if (FeedBack.TOKEN_EXPIRED.getStatus().equals(resultString)) {
                 token = getToken(batchVo.getAccount(), batchVo.getSignature());
@@ -97,37 +97,7 @@ public abstract class PoiTest {
      * @param resultList 返回结果的list<入参,返回json>
      * @throws Exception
      */
-    public List<BatchExcel> write(List<String> resultList, String account, MultipartFile excel) throws Exception {
-        List<BatchExcel> batchExcelList = new ArrayList<>();
-        // 创建新的Excel 工作簿
-        XSSFWorkbook workbook = new XSSFWorkbook();
-        // 在Excel工作簿中建一工作表，其名为缺省值
-        XSSFSheet sheet = workbook.createSheet();
-        //获取列       | 获取集合第一个元素|   获得输入项           |   获取输入项个数
-        int col_num = resultList.get(0).split("#1#")[0].split("; ").length;
-        int row_num = resultList.size();
-        for (int i = 0; i < row_num; i++) {
-            XSSFRow row = sheet.createRow(i);
-            String[] ss = resultList.get(i).split("#1#");
-            //获取输入项的数组
-            String[] params = ss[0].split("; ");
-            //打印输入项
-            for (int j = 0; j < col_num; j++) {
-                XSSFCell cell = row.createCell(j);
-                cell.setCellType(XSSFCell.CELL_TYPE_STRING);
-                cell.setCellValue(params[j]);
-            }
-            //打印输出项
-            XSSFCell cell = row.createCell(col_num + 1);
-            cell.setCellType(XSSFCell.CELL_TYPE_STRING);
-            cell.setCellValue(ss[1]);
-        }
-
-        BatchExcel batchExcel = FileOperationUtilImpl.saveOutExcel(workbook, account, excel);
-        batchExcelList.add(batchExcel);
-        return batchExcelList;
-
-    }
+    public abstract List<BatchExcel> write(List<String> resultList, String account, MultipartFile excel) throws Exception;
 
     /**
      * 获取授权码

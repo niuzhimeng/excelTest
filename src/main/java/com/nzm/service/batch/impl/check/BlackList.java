@@ -38,7 +38,9 @@ public class BlackList extends PoiTest {
         List<BatchExcel> batchExcelList = new ArrayList<>();
         //第二行列名字
         String[] titles = {"姓名", "身份证号码", "查询结果", "查询结果描述"};
-        XSSFWorkbook xssfWorkbook = ExcelUtils.createExcelToCheck("黑名单测试结果", titles);
+        XSSFWorkbook xssfWorkbook = ExcelUtils.createExcelToCheck("黑名单测试结果(正常返回)", titles);
+        //错误返回时的excel对象
+        XSSFWorkbook errorWorkbook = null;
         //获得创建好表头的sheet
         XSSFSheet sheet = xssfWorkbook.getSheetAt(0);
         //输出内容
@@ -48,6 +50,7 @@ public class BlackList extends PoiTest {
             XSSFRow outRow = sheet.createRow(i + 2);
             String[] ss = resultList.get(i).split("#1#");
             JsonObject asJsonObject = new JsonParser().parse(ss[1]).getAsJsonObject();
+            //如果成功返回
             if (asJsonObject.get("success").getAsBoolean()) {
                 JsonObject dataObject = asJsonObject.get("data").getAsJsonObject();
 
@@ -66,10 +69,32 @@ public class BlackList extends PoiTest {
                 XSSFCell cellFour = outRow.createCell(3);
                 cellFour.setCellType(XSSFCell.CELL_TYPE_STRING);
                 cellFour.setCellValue(dataObject.get("statusDesc").getAsString());
+            } else {
+                //异常返回
+                String[] errorTitles = {"姓名", "身份证号码", "返回结果"};
+                errorWorkbook = ExcelUtils.createExcelToCheck("黑名单测试结果(异常返回)", errorTitles);
+                XSSFSheet errorSheet = errorWorkbook.getSheetAt(0);
+                XSSFRow errorRow = errorSheet.createRow(2);
+                String[] splits = ss[0].split("; ");
+                //姓名
+                XSSFCell cellOne = errorRow.createCell(0);
+                cellOne.setCellType(XSSFCell.CELL_TYPE_STRING);
+                cellOne.setCellValue(splits[0]);
+                //身份证号码
+                XSSFCell cellTwo = errorRow.createCell(1);
+                cellTwo.setCellType(XSSFCell.CELL_TYPE_STRING);
+                cellTwo.setCellValue(splits[1]);
+                //返回json
+                XSSFCell cellThree = errorRow.createCell(2);
+                cellThree.setCellType(XSSFCell.CELL_TYPE_STRING);
+                cellThree.setCellValue(ss[1]);
             }
         }
-        BatchExcel batchExcel = FileOperationUtilImpl.saveOutExcel(xssfWorkbook, account, excel);
+        BatchExcel batchExcel = FileOperationUtilImpl.saveOutExcel(xssfWorkbook, account, excel, "测试结果(正常)");
         batchExcelList.add(batchExcel);
+        //输出excel
+        BatchExcel errorBatchExcel = FileOperationUtilImpl.saveOutExcel(errorWorkbook, account, excel, "测试结果(异常)");
+        batchExcelList.add(errorBatchExcel);
         return batchExcelList;
     }
 }
