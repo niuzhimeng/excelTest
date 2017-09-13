@@ -1,5 +1,6 @@
 package com.nzm.utils;
 
+import com.nzm.model.enums.FeedBack;
 import com.squareup.okhttp.*;
 import org.apache.log4j.Logger;
 
@@ -49,7 +50,7 @@ public class OkHttpUtils {
             result = client.newCall(request).execute().body().string();
             Response response = client.newCall(request).execute();
             if (response.code() == 401) {
-                return null;
+                return FeedBack.TOKEN_EXPIRED.getStatus();
             }
         } catch (IOException e) {
             LOG.error("调用异常:url:" + url);

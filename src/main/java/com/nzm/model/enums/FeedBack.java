@@ -5,7 +5,7 @@ package com.nzm.model.enums;
  * Created by nzm on 2017/6/1.
  */
 public enum FeedBack {
-
+    TOKEN_EXPIRED("token过期"),
     LOGIN_FAILED("用户名或密码错误"),
     TWICE_PWD_DIFFERENT("两次输入密码不一致"),
     OLD_PWD_FAILED("旧密码输入错误"),
