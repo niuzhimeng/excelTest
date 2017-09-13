@@ -4,6 +4,8 @@ import com.nzm.model.po.BatchExcel;
 import com.nzm.model.vo.BatchVo;
 import com.nzm.model.vo.JsonResponse;
 
+import java.util.List;
+
 /**
  * Created by Nzm on 2017/8/3.
  */
@@ -15,5 +17,5 @@ public interface BatchService {
      * @return
      * @throws Exception
      */
-    JsonResponse<BatchExcel> execute(BatchVo batchVo) throws Exception;
+    JsonResponse<List<BatchExcel>> execute(BatchVo batchVo) throws Exception;
 }

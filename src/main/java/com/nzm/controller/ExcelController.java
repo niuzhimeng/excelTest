@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by Nzm on 2017/8/3.
@@ -29,7 +30,7 @@ public class ExcelController {
     private BatchExcelMapper batchExcelMapper;
 
     @RequestMapping(value = "batchTest", method = RequestMethod.POST)
-    public JsonResponse<BatchExcel> batchTest(BatchVo batchVo) throws Exception {
+    public JsonResponse<List<BatchExcel>> batchTest(BatchVo batchVo) throws Exception {
 
         return batchService.execute(batchVo);
     }

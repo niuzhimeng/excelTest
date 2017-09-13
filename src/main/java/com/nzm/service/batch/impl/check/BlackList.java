@@ -6,11 +6,10 @@ import com.nzm.model.po.BatchExcel;
 import com.nzm.service.batch.PoiTest;
 import com.nzm.service.file.impl.FileOperationUtilImpl;
 import com.nzm.utils.ExcelUtils;
-import org.apache.poi.hssf.usermodel.*;
-import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,10 +34,11 @@ public class BlackList extends PoiTest {
     }
 
     @Override
-    public BatchExcel write(List<String> resultList, String account, MultipartFile excel) throws Exception {
+    public List<BatchExcel> write(List<String> resultList, String account, MultipartFile excel) throws Exception {
+        List<BatchExcel> batchExcelList = new ArrayList<>();
         //第二行列名字
         String[] titles = {"姓名", "身份证号码", "查询结果", "查询结果描述"};
-        XSSFWorkbook xssfWorkbook = ExcelUtils.createExcel("黑名单测试结果", titles);
+        XSSFWorkbook xssfWorkbook = ExcelUtils.createExcelToCheck("黑名单测试结果", titles);
         //获得创建好表头的sheet
         XSSFSheet sheet = xssfWorkbook.getSheetAt(0);
         //输出内容
@@ -68,6 +68,8 @@ public class BlackList extends PoiTest {
                 cellFour.setCellValue(dataObject.get("statusDesc").getAsString());
             }
         }
-        return FileOperationUtilImpl.saveOutExcel(xssfWorkbook, account, excel);
+        BatchExcel batchExcel = FileOperationUtilImpl.saveOutExcel(xssfWorkbook, account, excel);
+        batchExcelList.add(batchExcel);
+        return batchExcelList;
     }
 }

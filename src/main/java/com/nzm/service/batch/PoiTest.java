@@ -97,8 +97,8 @@ public abstract class PoiTest {
      * @param resultList 返回结果的list<入参,返回json>
      * @throws Exception
      */
-    public BatchExcel write(List<String> resultList, String account, MultipartFile excel) throws Exception {
-
+    public List<BatchExcel> write(List<String> resultList, String account, MultipartFile excel) throws Exception {
+        List<BatchExcel> batchExcelList = new ArrayList<>();
         // 创建新的Excel 工作簿
         XSSFWorkbook workbook = new XSSFWorkbook();
         // 在Excel工作簿中建一工作表，其名为缺省值
@@ -123,7 +123,9 @@ public abstract class PoiTest {
             cell.setCellValue(ss[1]);
         }
 
-        return FileOperationUtilImpl.saveOutExcel(workbook, account, excel);
+        BatchExcel batchExcel = FileOperationUtilImpl.saveOutExcel(workbook, account, excel);
+        batchExcelList.add(batchExcel);
+        return batchExcelList;
 
     }
 

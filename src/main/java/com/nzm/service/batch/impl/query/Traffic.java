@@ -1,4 +1,4 @@
-package com.nzm.service.batch.impl.check;
+package com.nzm.service.batch.impl.query;
 
 import com.nzm.service.batch.PoiTest;
 

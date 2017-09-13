@@ -26,24 +26,22 @@ public class BatchServiceImpl implements BatchService {
     private BatchExcelMapper batchExcelMapper;
 
     @Override
-    public JsonResponse<BatchExcel> execute(BatchVo batchVo) throws Exception {
+    public JsonResponse<List<BatchExcel>> execute(BatchVo batchVo) throws Exception {
         MultipartFile excel = batchVo.getExcel();
         String account = batchVo.getAccount();
         String batchType = batchVo.getBatchType();
-
         //获取指定对象
         Class<?> concrete = ApiClassFactory.getConcrete(batchType);
         PoiTest poiTest = (PoiTest) concrete.newInstance();
-
         //读取excel
         List<String> readExcelList = poiTest.readExcel(batchVo);
         //输出结果
-        BatchExcel write = poiTest.write(readExcelList, account, excel);
+        List<BatchExcel> batchExcelList = poiTest.write(readExcelList, account, excel);
         //保存文件信息
-        batchExcelMapper.insert(write);
+        batchExcelList.forEach(write -> batchExcelMapper.insert(write));
         //保存输入excel
         FileOperationUtilImpl.saveInExcel(batchVo);
-        return new JsonResponse<BatchExcel>().createSuccess("测试完成，请下载测试结果", write);
+        return new JsonResponse<List<BatchExcel>>().createSuccess("测试完成，请下载测试结果", batchExcelList);
     }
 
 }

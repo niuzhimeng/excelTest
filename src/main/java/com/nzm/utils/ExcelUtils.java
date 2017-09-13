@@ -10,13 +10,13 @@ import org.apache.poi.xssf.usermodel.*;
  */
 public class ExcelUtils {
     /**
-     * 创建一个代表头的excel对象
+     * 创建一个代表头的excel对象(验证类)
      *
      * @param sheetName 表头名称
      * @param titles    列名
      * @return 创建好的excel对象
      */
-    public static XSSFWorkbook createExcel(String sheetName, String[] titles) {
+    public static XSSFWorkbook createExcelToCheck(String sheetName, String[] titles) {
         // 创建新的Excel 工作簿
         XSSFWorkbook workbook = new XSSFWorkbook();
         //1.1创建合并单元格对象

@@ -2,7 +2,7 @@ package com.nzm.utils;
 
 import com.nzm.model.vo.enumVo.BatchApi;
 import com.nzm.service.batch.impl.check.PoliceIdentity;
-import com.nzm.service.batch.impl.check.Traffic;
+import com.nzm.service.batch.impl.query.Traffic;
 import com.nzm.service.batch.impl.check.BlackList;
 
 /**
