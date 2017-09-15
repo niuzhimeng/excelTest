@@ -70,7 +70,7 @@ public abstract class PoiTest {
             //发送http请求
 //            String resultString = OkHttpUtils.get(url);
             Thread.sleep(30);
-            String resultString = "{\"success\":false,\"data\":{\"name\":\"王卫卫\",\"idCard\":\"130433198206060127\",\"status\":\"NO_DATA\",\"statusDesc\":\"查询无数据\"}}";
+            String resultString = "{\"success\":true,\"data\":{\"name\":\"王卫卫\",\"idCard\":\"130433198206060127\",\"status\":\"NO_DATA\",\"statusDesc\":\"查询无数据\"}}";
             //如果token过期，重新获取并拼接url
             if (FeedBack.TOKEN_EXPIRED.getStatus().equals(resultString)) {
                 token = getToken(batchVo.getAccount(), batchVo.getSignature());

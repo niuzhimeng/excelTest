@@ -93,8 +93,10 @@ public class BlackList extends PoiTest {
         BatchExcel batchExcel = FileOperationUtilImpl.saveOutExcel(xssfWorkbook, account, excel, "测试结果(正常)");
         batchExcelList.add(batchExcel);
         //输出excel
-        BatchExcel errorBatchExcel = FileOperationUtilImpl.saveOutExcel(errorWorkbook, account, excel, "测试结果(异常)");
-        batchExcelList.add(errorBatchExcel);
+        if (errorWorkbook != null) {
+            BatchExcel errorBatchExcel = FileOperationUtilImpl.saveOutExcel(errorWorkbook, account, excel, "测试结果(异常)");
+            batchExcelList.add(errorBatchExcel);
+        }
         return batchExcelList;
     }
 }
