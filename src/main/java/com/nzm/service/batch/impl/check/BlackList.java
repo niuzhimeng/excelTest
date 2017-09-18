@@ -38,7 +38,7 @@ public class BlackList extends PoiTest {
         List<BatchExcel> batchExcelList = new ArrayList<>();
         //第二行列名字
         String[] titles = {"姓名", "身份证号码", "查询结果", "查询结果描述"};
-        XSSFWorkbook xssfWorkbook = ExcelUtils.createExcelToCheck("黑名单测试结果(正常返回)", titles);
+        XSSFWorkbook xssfWorkbook = ExcelUtils.createExcelToCheck("黑名单测试结果(正常返回)", titles, 6);
         //错误返回时的excel对象
         XSSFWorkbook errorWorkbook = null;
         //获得创建好表头的sheet
@@ -72,7 +72,7 @@ public class BlackList extends PoiTest {
             } else {
                 //异常返回
                 String[] errorTitles = {"姓名", "身份证号码", "返回结果"};
-                errorWorkbook = ExcelUtils.createExcelToCheck("黑名单测试结果(异常返回)", errorTitles);
+                errorWorkbook = ExcelUtils.createExcelToCheck("黑名单测试结果(异常返回)", errorTitles, 6);
                 XSSFSheet errorSheet = errorWorkbook.getSheetAt(0);
                 XSSFRow errorRow = errorSheet.createRow(2);
                 String[] splits = ss[0].split("; ");
