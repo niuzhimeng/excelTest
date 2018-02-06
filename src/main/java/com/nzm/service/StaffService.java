@@ -9,6 +9,8 @@ public interface StaffService {
 
     staff update(staff sta);
 
+    staff selectByCache(String jobNo);
+
     staff select(String jobNo);
 
     staff insert(staff sta);

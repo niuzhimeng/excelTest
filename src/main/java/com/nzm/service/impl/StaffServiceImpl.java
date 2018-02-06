@@ -4,6 +4,7 @@ import com.nzm.dao.mapper.staffMapper;
 import com.nzm.model.po.staff;
 import com.nzm.service.StaffService;
 import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -18,10 +19,16 @@ public class StaffServiceImpl implements StaffService {
     private staffMapper staMapper;
 
     @Override
-    @CachePut(value = "common", key = "'staff:'+#sta.getAccount()+'-'+#sta.getJobNo()")
+    @CachePut(value = "common", key = "'staff:'+#sta.getJobNo()")
     public staff update(staff sta) {
         staMapper.updateByPrimaryKeySelective(sta);
         return sta;
+    }
+
+    @Override
+    @Cacheable(value = "common", key = "'staff:'+#jobNo")
+    public staff selectByCache(String jobNo) {
+        return staMapper.selectByPrimaryKey(jobNo);
     }
 
     @Override
