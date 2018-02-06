@@ -11,7 +11,7 @@
 		</commentGenerator>
 		<!-- 数据库链接URL、用户名、密码 -->
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-						connectionURL="jdbc:mysql://localhost:3306/amdb?rewriteBatchedStatements=true"
+						connectionURL="jdbc:mysql://localhost:3306/devdb?rewriteBatchedStatements=true"
 						userId="root"
 						password="nzm19940827">
 		<!--<jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver" connectionURL="jdbc:oracle:thin:@localhost:1521:orcl" userId="msa" password="msa">-->
@@ -42,8 +42,8 @@
 			<property name="enableSubPackages" value="false" />
 		</javaClientGenerator>
 		<!-- 要生成那些表(更改tableName和domainObjectName就可以) -->
-		<table tableName="batch_excel"
-			   domainObjectName="BatchExcel"
+		<table tableName="staff"
+			   domainObjectName="staff"
 			   enableCountByExample="false"
 			   enableUpdateByExample="false"
 			   enableDeleteByExample="false"
