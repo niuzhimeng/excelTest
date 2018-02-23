@@ -1,5 +1,8 @@
 package com.nzm.model.po;
 
+import java.util.Date;
+import java.util.List;
+
 public class staff {
     private String jobNo;
 
@@ -16,6 +19,26 @@ public class staff {
     private Integer state;
 
     private String macAdress;
+
+    private Date createTime;
+
+    private List<StaffContact> staffContactList;
+
+    public List<StaffContact> getStaffContactList() {
+        return staffContactList;
+    }
+
+    public void setStaffContactList(List<StaffContact> staffContactList) {
+        this.staffContactList = staffContactList;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 
     public String getJobNo() {
         return jobNo;

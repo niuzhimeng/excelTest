@@ -1,5 +1,6 @@
 package com.nzm.controller;
 
+import com.nzm.dao.mapper.staffMapper;
 import com.nzm.model.po.staff;
 import com.nzm.model.vo.JsonResponse;
 import com.nzm.service.AopTestService;
@@ -21,6 +22,8 @@ public class AopTest {
     @Resource
     private StaffService staffService;
 
+    @Resource
+    private staffMapper staMapper;
 //    @Resource(name = "JedisClient")
 //    private JedisClient jedisClient;
 
@@ -62,8 +65,20 @@ public class AopTest {
      *
      * @return
      */
-    @RequestMapping(value = "insert", method = RequestMethod.GET)
+    @RequestMapping(value = "insert", method = RequestMethod.POST)
     public JsonResponse insert(@RequestBody staff sta) {
         return new JsonResponse<>().createSuccess(staffService.insert(sta));
+    }
+
+    /**
+     * 通过映射 直接返回一对多
+     *
+     * @param jobNo 工号
+     * @return
+     */
+    @RequestMapping(value = "selectByMap", method = RequestMethod.GET)
+    public JsonResponse selectByMap(@RequestParam String jobNo) {
+        staff staff = staMapper.selectByMap(jobNo);
+        return new JsonResponse<>().createSuccess(staff);
     }
 }

@@ -11,6 +11,27 @@
     <result column="state" property="state" jdbcType="INTEGER" />
     <result column="mac_adress" property="macAdress" jdbcType="VARCHAR" />
   </resultMap>
+
+  <resultMap id="BaseResultMap1" type="com.nzm.model.po.staff" >
+    <id column="job_no" property="jobNo" jdbcType="VARCHAR" />
+    <result column="account" property="account" jdbcType="VARCHAR" />
+    <result column="department" property="department" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="mail" property="mail" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="mac_adress" property="macAdress" jdbcType="VARCHAR" />
+    
+    <collection property="staffContactList" ofType="com.nzm.model.po.StaffContact">
+      <id column="id" property="id" jdbcType="VARCHAR" />
+      <result column="job_no" property="jobNo" jdbcType="VARCHAR" />
+      <result column="link_man" property="linkMan" jdbcType="VARCHAR" />
+      <result column="relation" property="relation" jdbcType="VARCHAR" />
+      <result column="phone_number" property="phoneNumber" jdbcType="VARCHAR" />
+    </collection>
+    
+  </resultMap>
+
   <sql id="Base_Column_List" >
     job_no, account, department, name, password, mail, state, mac_adress
   </sql>
@@ -59,6 +80,9 @@
       <if test="macAdress != null" >
         mac_adress,
       </if>
+      <if test="create_time != null" >
+        create_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="jobNo != null" >
@@ -84,6 +108,9 @@
       </if>
       <if test="macAdress != null" >
         #{macAdress,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime},
       </if>
     </trim>
   </insert>
@@ -125,4 +152,14 @@
       mac_adress = #{macAdress,jdbcType=VARCHAR}
     where job_no = #{jobNo,jdbcType=VARCHAR}
   </update>
+
+  <select id="selectByMap" resultMap="BaseResultMap1">
+    SELECT
+        s.*, c.*
+    FROM
+        staff s
+    LEFT JOIN staff_contact c ON s.job_no = c.job_no
+    WHERE s.job_no = 100
+  </select>
+
 </mapper>
